@@ -44,27 +44,9 @@ async def on_ready():
 isrunning = True
 
 @bot.command()
-async def poll(ctx, id, question, *args):
-    voters = []
-    vote_counts = {}
-    poll_id = id
-    # Create poll
-    options = []
-    react_to_option = {}
-    description = ""
-    for i, arg in enumerate(args):
-      description += emojiLetters[i] + " " + arg + "\n"
-      options.append(arg)
-      react_to_option[emojiLetters[i]] = arg
-    print(react_to_option)
-    # Initialize vote_counts dictionary
-    for option in options:
-      vote_counts[option] = 0
-    print(vote_counts)
-    my_poll = discord.Embed(title = question, description = description)
-    message = await ctx.send(embed = my_poll)
-    for i, option in enumerate(options):
-      await message.add_reaction(emojiLetters[i])
+async def poll(ctx, poll_id, question, *args):
+    poll_id = poll_id
+    poll_id = Poll(question, *args)
 
     # Get votes
     reaction = None
