@@ -3,8 +3,8 @@ from discord.ext import commands
 import os
 import datetime
 import asyncio
-from Poll import Poll
 
+emojiCheck = '\N{THUMBS UP SIGN}'
 emojiLetters = [
             "\N{REGIONAL INDICATOR SYMBOL LETTER A}",
             "\N{REGIONAL INDICATOR SYMBOL LETTER B}",
@@ -44,10 +44,10 @@ async def on_ready():
 isrunning = True
 
 @bot.command()
-async def poll(ctx, id, question, *args):
+async def poll(ctx, question, *args):
     voters = []
     vote_counts = {}
-    poll_id = id
+    
     # Create poll
     options = []
     react_to_option = {}
@@ -65,19 +65,19 @@ async def poll(ctx, id, question, *args):
     message = await ctx.send(embed = my_poll)
     for i, option in enumerate(options):
       await message.add_reaction(emojiLetters[i])
-
+    await message.add_reaction(emojiCheck)
     # Get votes
     reaction = None
     # Ensure reaction is to the poll message and the reactor is not the bot
     def check(reaction, user):
-        return reaction.message.id == message.id and user.id != 797601108268155001
+        return reaction.message.id == message.id and user.id != 797601108268155001 
         
     
     global isrunning  
     while True:
         reaction, user = await bot.wait_for('reaction_add', check = check)
-        if isrunning == True:
-          await message.remove_reaction(reaction, user)
+        
+        await message.remove_reaction(reaction, user)
         # Check if the user has already voted
         if user not in voters:
           voters.append(user)
@@ -95,10 +95,8 @@ async def poll(ctx, id, question, *args):
           break
         #await asyncio.sleep(1)
  
-    #@bot.command
-    #async def close_poll(ctx):  
-      # Send messages of results 
-    
+
+      
 
 @bot.command()
 async def stop(ctx):
