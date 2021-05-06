@@ -38,7 +38,7 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.event
 async def on_ready():
-  print('Event Bot has entered chat.')
+    print('Event Bot has entered chat.')
   
 
 isrunning = True
@@ -47,7 +47,7 @@ isrunning = True
 async def lfg(ctx, question, size):
     voters = []
     size = size
-    my_lfg = discord.Embed(title = question, description = emojiCheck)
+    my_lfg = discord.Embed(title = question)
     message = await ctx.send(embed = my_lfg)
     await message.add_reaction(emojiCheck)
     
@@ -56,7 +56,7 @@ async def lfg(ctx, question, size):
 
     try:
         for i in range(int(size)):
-          reaction, user = await bot.wait_for('reaction_add', timeout=30, check=check)
+          reaction, user = await bot.wait_for('reaction_add', timeout=3600, check=check)
           if user not in voters:
             voters.append(user.name)
              
@@ -79,13 +79,13 @@ async def poll(ctx, question, *args):
     react_to_option = {}
     description = ""
     for i, arg in enumerate(args):
-      description += emojiLetters[i] + " " + arg + "\n"
-      options.append(arg)
-      react_to_option[emojiLetters[i]] = arg
+        description += emojiLetters[i] + " " + arg + "\n"
+        options.append(arg)
+        react_to_option[emojiLetters[i]] = arg
     print(react_to_option)
     # Initialize vote_counts dictionary
     for option in options:
-      vote_counts[option] = 0
+        vote_counts[option] = 0
     print(vote_counts)
     #gives everyone an notification
     await ctx.send("@everyone")
@@ -93,7 +93,7 @@ async def poll(ctx, question, *args):
     my_poll = discord.Embed(title = question, description = description)
     message = await ctx.send(embed = my_poll)
     for i, option in enumerate(options):
-      await message.add_reaction(emojiLetters[i])
+        await message.add_reaction(emojiLetters[i])
     await message.add_reaction(emojiCheck)
     # Get votes
     reaction = None
@@ -109,19 +109,19 @@ async def poll(ctx, question, *args):
         await message.remove_reaction(reaction, user)
         # Check if the user has already voted
         if user not in voters:
-          voters.append(user)
-          vote_counts[react_to_option[reaction.emoji]] += 1
-          print(vote_counts)
+            voters.append(user)
+            vote_counts[react_to_option[reaction.emoji]] += 1
+            print(vote_counts)
         if isrunning == False:
-          isrunning = True
-          print("done")
-          results = ""
-          for option in vote_counts:
-            results += option + ": " + str(vote_counts[option]) + "\n"
-          results_message = discord.Embed(title = question, description = results)
-          await message.clear_reactions()
-          await ctx.send(embed = results_message)
-          break
+            isrunning = True
+            print("done")
+            results = ""
+            for option in vote_counts:
+                results += option + ": " + str(vote_counts[option]) + "\n"
+            results_message = discord.Embed(title = question, description = results)
+            await message.clear_reactions()
+            await ctx.send(embed = results_message)
+            break
         #await asyncio.sleep(1)
  
 
@@ -129,8 +129,8 @@ async def poll(ctx, question, *args):
 
 @bot.command()
 async def stop(ctx):
-  global isrunning
-  isrunning = False
+    global isrunning
+    isrunning = False
 
 @bot.command()
 async def test(ctx, *args):
