@@ -44,6 +44,32 @@ async def on_ready():
 isrunning = True
 
 @bot.command()
+async def lfg(ctx, question, size):
+    voters = []
+    size = size
+    my_lfg = discord.Embed(title = question, description = emojiCheck)
+    message = await ctx.send(embed = my_lfg)
+    await message.add_reaction(emojiCheck)
+    
+    def check(reaction, user):
+        return str(reaction.emoji) == '👍' and user != bot.user
+
+    try:
+        for i in range(int(size)):
+          reaction, user = await bot.wait_for('reaction_add', timeout=30, check=check)
+          if user not in voters:
+            voters.append(user.name)
+             
+        #gives everyone an notification
+        await ctx.send("@everyone")
+        voters_message = discord.Embed(title = question, description = voters)
+        await message.clear_reactions()
+        await ctx.send(embed = voters_message)
+    except asyncio.TimeoutError:
+
+        await ctx.send("LFG timed out!")
+
+@bot.command()
 async def poll(ctx, question, *args):
     voters = []
     vote_counts = {}
@@ -61,6 +87,9 @@ async def poll(ctx, question, *args):
     for option in options:
       vote_counts[option] = 0
     print(vote_counts)
+    #gives everyone an notification
+    await ctx.send("@everyone")
+
     my_poll = discord.Embed(title = question, description = description)
     message = await ctx.send(embed = my_poll)
     for i, option in enumerate(options):
@@ -70,7 +99,7 @@ async def poll(ctx, question, *args):
     reaction = None
     # Ensure reaction is to the poll message and the reactor is not the bot
     def check(reaction, user):
-        return reaction.message.id == message.id and user.id != 797601108268155001 
+        return reaction.message.id == message.id and user != bot.user
         
     
     global isrunning  
