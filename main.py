@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 import os
 import datetime
 import asyncio
@@ -43,28 +44,41 @@ async def on_ready():
 
 isrunning = True
 
+
 @bot.command()
 async def lfg(ctx, question, size):
     voters = []
+    voters_id = []
     size = size
     my_lfg = discord.Embed(title = question)
+    await ctx.send("@everyone")
     message = await ctx.send(embed = my_lfg)
     await message.add_reaction(emojiCheck)
     
     def check(reaction, user):
         return str(reaction.emoji) == '👍' and user != bot.user
-
+    
     try:
+        
         for i in range(int(size)):
-          reaction, user = await bot.wait_for('reaction_add', timeout=3600, check=check)
-          if user not in voters:
-            voters.append(user.name)
-             
+            reaction, user = await bot.wait_for('reaction_add', timeout=3600, check=check)
+            if user not in voters:
+              voters.append(user.name)
+              voters_id.append(user.id)
+              
+              
+        print(voters_id)     
         #gives everyone an notification
-        await ctx.send("@everyone")
+        for thing in voters_id:
+            print(thing)
+            user = await bot.fetch_user(int(thing))
+            print(user)
+            await user.send("You're in bitch!")
+        #await ctx.send("@everyone")
         voters_message = discord.Embed(title = question, description = voters)
         await message.clear_reactions()
         await ctx.send(embed = voters_message)
+        
     except asyncio.TimeoutError:
 
         await ctx.send("LFG timed out!")
