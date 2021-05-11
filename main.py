@@ -137,18 +137,10 @@ async def poll(ctx, question, *args):
             await ctx.send(embed = results_message)
             break
         #await asyncio.sleep(1)
- 
-
-      
 
 @bot.command()
 async def stop(ctx):
     global isrunning
     isrunning = False
-
-@bot.command()
-async def test(ctx, *args):
-    print("fucking work")
-    await ctx.channel.send('{} arguments: {}'.format(len(args), ', '.join(args)))
 
 bot.run(os.environ['TOKEN'])
