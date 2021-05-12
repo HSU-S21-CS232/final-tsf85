@@ -1,0 +1,20 @@
+I certainly had a rough start with what direction I wanted to take this. I spent a few days trying to make sense
+of the discord api documentation, and largely wrote some code that didn't really work before starting over and
+trying to make a poll class. The class ended seeming like more work than the bot needed in order to be useful, but
+I had a pretty decent understanding of using the discord API at this point, so I started over again.
+
+There were a few things that I still don't quite get, but was able to use in the context of both of the functions
+I made. The real wall I ran into was trying to get the LFG function to send private messages to the users that 
+had clicked the emoji to sign up for whatever activity. I spent about a day and a half accomplishing nothing, except
+figuring out that sometime before 2019 discord changed some syntax, which lead to googling lot of solutions that
+just plain didn't work. I actually had the lightbulb moment that I was asking the wrong questions while laying in
+bed. I realized, for whatever reason what I had used to make a user object for an earlier part of the code had only
+worked specifically for that part, and I needed to look up how to make another list of user objects in order to 
+make the private messaging work all at once, after getting the amount of players I had set in the lfg command. Even
+that took a couple hours of finding old solutions online that didn't work at all.
+
+Anyways, the end result is something that I feel proud of, even though look at the code that I wrote doesn't look
+very long. I also didn't end up making a function for recording wagers because I just couldn't come up with anything
+that was more convenient than just making a seperate chat channel for that.
+
+https://github.com/HSU-S21-CS232/final-tsf85
